@@ -24,6 +24,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/rent", rentRoutes);
 
 app.listen(PORT, () => {
-    console.log(`🚀 Server running at http://localhost:${PORT}`);
+    console.log(`Server running at http://localhost:${PORT}`);
   });
 });
