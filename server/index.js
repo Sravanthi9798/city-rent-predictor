@@ -17,7 +17,7 @@ const PORT = 3001;
 dataBase();
 
 loadCSV().then(() => {
-console.log("📊 Housing CSV loaded");
+console.log("Housing CSV loaded");
 
 app.use("/api/auth", authRoutes);
 

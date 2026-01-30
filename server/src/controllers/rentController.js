@@ -1,6 +1,6 @@
 const { evaluateRent } = require("../services/rentService");
 
-function evaluateRentController(req, res) {
+const evaluateRentController=(req, res) =>{
   const { city, area, bhk, size, rent } = req.body;
 
   if (!city || !bhk || !size || !rent) {

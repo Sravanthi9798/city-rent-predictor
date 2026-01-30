@@ -1,7 +1,7 @@
 const Regression = require("ml-regression-multivariate-linear");
 const { getData } = require("../utils/csvLoader");
 
-function evaluateRent(city, area, bhk, size, rent) {
+const evaluateRent=(city, area, bhk, size, rent)=> {
   const allData = getData();
 
   // area level filtering
