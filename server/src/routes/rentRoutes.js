@@ -1,7 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const {evaluateRentController} = require("../controllers/rentController");
+const {evaluateRentController,getCitiesController,getAreasController} = require("../controllers/rentController");
 
-router.post("/evaluate", evaluateRentController);
+router.post("/rent/predict", evaluateRentController);
+
+router.get("/cities", getCitiesController);
+
+router.get("/areas", getAreasController);
 
 module.exports = router;
