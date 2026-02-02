@@ -15,9 +15,9 @@ function RentPrediction() {
   // Fetch cities
   useEffect(() => {
     fetch("http://localhost:3001/api/cities")
-      .then(res => res.json())
-      .then(data => setCities(data))
-      .catch(err => console.error(err));
+      .then((res) => res.json())
+      .then((data) => setCities(data))
+      .catch((err) => console.error(err));
   }, []);
 
   // Fetch areas when city changes
@@ -27,17 +27,24 @@ function RentPrediction() {
     if (!selectedCity) return;
 
     fetch(
-      `http://localhost:3001/api/areas?city=${encodeURIComponent(selectedCity)}`
+      `http://localhost:3001/api/areas?city=${encodeURIComponent(selectedCity)}`,
     )
-      .then(res => res.json())
-      .then(data => setAreas(data))
-      .catch(err => console.error(err));
+      .then((res) => res.json())
+      .then((data) => setAreas(data))
+      .catch((err) => console.error(err));
   }, [selectedCity]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!selectedCity || !selectedArea || !bhk || !size || !bathroom || !furnishing) {
+    if (
+      !selectedCity ||
+      !selectedArea ||
+      !bhk ||
+      !size ||
+      !bathroom ||
+      !furnishing
+    ) {
       alert("All fields are required");
       return;
     }
@@ -53,23 +60,20 @@ function RentPrediction() {
           size: Number(size),
           bathroom: Number(bathroom),
           furnished: furnishing.toLowerCase(),
-          rent: rent ? Number(rent) : undefined
-        })
+          rent: rent ? Number(rent) : undefined,
+        }),
       });
 
       const data = await res.json();
       setPrediction(data);
     } catch (err) {
-      alert("Prediction failed",err);
+      alert("Prediction failed", err);
     }
   };
 
   return (
     <div className="w-full font-sans-serif flex justify-center">
       <div className="container shadow-md rounded-sm bg-gray-50 mt-15 w-120 p-4">
-<div className="text-red-500 text-2xl font-bold">
-  Tailwind Test
-</div>
         {/* Logo */}
         {/* <div className="flex justify-center">
           <img className="w-20" src={person} alt="logo" />
@@ -77,16 +81,13 @@ function RentPrediction() {
 
         {/* Heading */}
         <div className="flex justify-center mb-3">
-          <h2 className="font-semibold text-xl text-black">
-            Rent Predictor
-          </h2>
+          <h2 className="font-semibold text-xl text-black">Rent Predictor</h2>
         </div>
 
         {/* Form */}
         <form className="flex flex-col p-3" onSubmit={handleSubmit}>
-
           {/* City */}
-          <label className="font-semibold my-1">City</label>
+          <label className="font-semibold my-1 text-left">City</label>
           <select
             className="border rounded-sm h-9 p-2"
             value={selectedCity}
@@ -94,13 +95,15 @@ function RentPrediction() {
             required
           >
             <option value="">Select City</option>
-            {cities.map(city => (
-              <option key={city} value={city}>{city}</option>
+            {cities.map((city) => (
+              <option key={city} value={city}>
+                {city}
+              </option>
             ))}
           </select>
 
           {/* Area */}
-          <label className="font-semibold my-1">Area</label>
+          <label className="font-semibold my-1 text-left">Area</label>
           <select
             className="border rounded-sm h-9 p-2"
             value={selectedArea}
@@ -108,13 +111,15 @@ function RentPrediction() {
             required
           >
             <option value="">Select Area</option>
-            {areas.map(area => (
-              <option key={area} value={area}>{area}</option>
+            {areas.map((area) => (
+              <option key={area} value={area}>
+                {area}
+              </option>
             ))}
           </select>
 
           {/* BHK */}
-          <label className="font-semibold my-1">BHK</label>
+          <label className="font-semibold my-1 text-left">BHK</label>
           <input
             className="border rounded-sm h-9 p-2"
             type="number"
@@ -125,7 +130,7 @@ function RentPrediction() {
           />
 
           {/* Size */}
-          <label className="font-semibold my-1">Size (sqft)</label>
+          <label className="font-semibold my-1 text-left">Size (sqft)</label>
           <input
             className="border rounded-sm h-9 p-2"
             type="number"
@@ -136,7 +141,7 @@ function RentPrediction() {
           />
 
           {/* Bathrooms */}
-          <label className="font-semibold my-1">Bathrooms</label>
+          <label className="font-semibold my-1 text-left">Bathrooms</label>
           <input
             className="border rounded-sm h-9 p-2"
             type="number"
@@ -147,7 +152,7 @@ function RentPrediction() {
           />
 
           {/* Furnishing */}
-          <label className="font-semibold my-1">Furnishing</label>
+          <label className="font-semibold my-1 text-left">Furnishing</label>
           <select
             className="border rounded-sm h-9 p-2"
             value={furnishing}
@@ -161,7 +166,9 @@ function RentPrediction() {
           </select>
 
           {/* Rent */}
-          <label className="font-semibold my-1">Current Rent (optional)</label>
+          <label className="font-semibold my-1 text-left">
+            Current Rent (optional)
+          </label>
           <input
             className="border rounded-sm h-9 p-2"
             type="number"
@@ -179,9 +186,40 @@ function RentPrediction() {
 
         {/* Result */}
         {prediction && (
-          <div className="mt-4 p-3 border rounded bg-white text-sm">
-            <h3 className="font-semibold mb-2">Prediction Result</h3>
-            <pre>{JSON.stringify(prediction, null, 2)}</pre>
+          <div className="mt-5 bg-white border rounded-md shadow p-4">
+            {/* Title */}
+            <h3 className="text-lg font-semibold text-gray-800 mb-3">
+              Prediction Result
+            </h3>
+
+            {/* Predicted Rent */}
+            <div className="text-3xl font-bold text-sky-700">
+              ₹ {prediction.predictedRent.toLocaleString()}
+            </div>
+
+            {/* Range */}
+            <p className="text-sm text-gray-600 mt-1">
+              Estimated range: ₹{" "}
+              {prediction.estimatedRange.min.toLocaleString()} – ₹{" "}
+              {prediction.estimatedRange.max.toLocaleString()}
+            </p>
+
+            {/* Result Badge */}
+            <div className="mt-3">
+              <span
+                className={`inline-block px-3 py-1 text-sm font-semibold rounded-full
+          ${
+            prediction.result === "Too Low"
+              ? "bg-red-100 text-red-700"
+              : prediction.result === "Too High"
+                ? "bg-orange-100 text-orange-700"
+                : "bg-green-100 text-green-700"
+          }
+        `}
+              >
+                {prediction.result}
+              </span>
+            </div>
           </div>
         )}
       </div>
