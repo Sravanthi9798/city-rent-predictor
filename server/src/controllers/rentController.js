@@ -1,9 +1,6 @@
 const { evaluateRent } = require("../services/rentService");
 const { getData } = require("../utils/csvLoader");
 
-// Normalize strings
-// const normalize = (str) => str?.trim().toLowerCase();
-
 // Evaluate rent API
 const evaluateRentController = async (req, res) => {
   try {
@@ -38,8 +35,8 @@ const getCitiesController = (req, res) => {
       ...new Set(
         getData()
           .map(d => d.city)
-          .filter(Boolean)          // remove empty/undefined
-          .map(c => c.trim())       // remove extra spaces
+          .filter(Boolean) // remove empty/undefined
+          .map(c => c.trim()) // remove extra spaces
       )
     ].sort();
 
@@ -54,37 +51,42 @@ const getCitiesController = (req, res) => {
 const getAreasController = (req, res) => {
   try {
     const { city } = req.query;
-
     if (!city) {
       return res.status(400).json({ message: "City is required" });
     }
 
-    // Filter rows matching the city (normalized)
-    const filteredRows = getData().filter(
-      (d) => normalize(d.city) === normalize(city)
+    const cityRows = getData().filter(
+      d => normalize(d.city) === normalize(city)
     );
 
-    if (filteredRows.length === 0) {
-      return res.json([]); // return empty array if city not found
+    if (cityRows.length === 0) {
+      return res.json([]);
     }
 
-    // Extract unique areas
-    const areas = [
-      ...new Set(
-        filteredRows
-          .map(d => d.area)
-          .filter(Boolean)  // remove empty/undefined areas
-          .map(a => a.trim()) // remove extra spaces
-      )
-    ].sort();
+    // Count listings per area
+    const areaCountMap = {};
+
+    cityRows.forEach(d => {
+      const area = d.area?.trim();
+      if (!area) return;
+
+      areaCountMap[area] = (areaCountMap[area] || 0) + 1;
+    });
+
+    //  Keep only areas with 3 or more listings
+    const areas = Object.keys(areaCountMap)
+      .filter(area => areaCountMap[area] >= 3)
+      .sort();
 
     res.json(areas);
   } catch (err) {
     console.error("Error getting areas:", err);
-    res.status(500).json({ message: "Failed to fetch areas", error: err.message });
+    res.status(500).json({
+      message: "Failed to fetch areas",
+      error: err.message
+    });
   }
 };
-
 
 module.exports = {
   evaluateRentController,
