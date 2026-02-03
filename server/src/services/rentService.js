@@ -92,8 +92,8 @@ const evaluateRent = async (
   ]])[0][0];
 
   // Estimated range
-  const minEstimatedRent = Math.round(predictedRent * 0.9);
-  const maxEstimatedRent = Math.round(predictedRent * 1.1);
+  const minEstimatedRent = Math.round(predictedRent * 0.9);  // -10%
+  const maxEstimatedRent = Math.round(predictedRent * 1.1);  // +10%
 
   let result = "Fair";
   if (rent > maxEstimatedRent) result = "Too High";

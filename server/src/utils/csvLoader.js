@@ -20,7 +20,7 @@ const loadCSV = async () => {
           const bathroom = Number(row.Bathroom);
           const rent = Number(row.Rent);
 
-          // REMOVE ROW if ANY field is missing or invalid
+          // Remove row  if ANY field is missing or invalid
           if (
             !city ||
             !area ||
@@ -49,7 +49,7 @@ const loadCSV = async () => {
         .on("error", reject);
     });
 
-    console.log(`CSV Loaded (strict mode): ${data.length} valid records`);
+    console.log(`CSV Loaded: ${data.length} valid records`);
   } catch (error) {
     console.error("CSV Load Failed:", error.message);
     throw error;

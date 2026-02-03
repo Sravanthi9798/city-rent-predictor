@@ -66,7 +66,7 @@ const compareMarket = ({ city, area, bhk, size, rent }) => {
     input: { city, area, bhk: bhkNum, size: sizeNum, rent: rentNum },
 
     areaComparison:
-      areaListings.length >= 3
+      areaListings.length >= 1
         ? calculateMarketStats(areaListings, rentNum, "area")
         : { message: "Insufficient area-level data" },
 
@@ -74,7 +74,7 @@ const compareMarket = ({ city, area, bhk, size, rent }) => {
       cityListings.length >= 3
         ? calculateMarketStats(cityListings, rentNum, "city")
         : { message: "Insufficient city-level data" }
-  };
+  }; 
 };
 
 module.exports = { compareMarket };
