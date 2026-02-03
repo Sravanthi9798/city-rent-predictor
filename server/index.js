@@ -3,8 +3,6 @@ const express = require("express");
 const cors = require("cors");
 
 const { loadCSV } = require("./src/utils/csvLoader");
-const { trainModel } = require("./src/services/mlModel");
-
 const rentRoutes = require("./src/routes/rentRoutes");
 const marketRoutes = require("./src/routes/marketRoutes");
 

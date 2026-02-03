@@ -1,7 +1,7 @@
 const Regression = require("ml-regression-multivariate-linear");
 const { getData } = require("../utils/csvLoader");
 
-// constants
+// constants, beacause ml cannot understand strings
 const furnishingMap = {
   unfurnished: 0,
   semifurnished: 1,

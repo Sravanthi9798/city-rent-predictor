@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import SummaryCard from "../components/SummaryCard";
 import ChartBlock from "../components/ChartBlock";
 
 function MarketComparisonDashboard() {
-  const { state } = useLocation();
   const navigate = useNavigate();
-  const { input } = state || {};
+  const input =location.state?.input ||
+    JSON.parse(localStorage.getItem("rentInput"));
   const [data, setData] = useState(null);
 
   useEffect(() => {
@@ -33,6 +33,12 @@ function MarketComparisonDashboard() {
 
   return (
     <div className="max-w-5xl mx-auto p-6 space-y-6">
+      <button
+      onClick={() => navigate("/")}
+      className="text-sm text-balck-600 hover:underline flex items-center gap-1"
+    >
+      ← Back to Rent Predictor
+    </button>
       <h2 className="text-xl font-bold">
         Market Comparison – {input.city} / {input.area}
       </h2>

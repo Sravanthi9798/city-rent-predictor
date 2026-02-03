@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function RentPrediction() {
   const [cities, setCities] = useState([]);
@@ -11,6 +12,12 @@ function RentPrediction() {
   const [furnishing, setFurnishing] = useState("");
   const [rent, setRent] = useState("");
   const [prediction, setPrediction] = useState(null);
+
+  const navigate=useNavigate();
+
+  useEffect(() => {
+    localStorage.removeItem("rentInput");
+  }, []);
 
   // Fetch cities
   useEffect(() => {
@@ -70,6 +77,25 @@ function RentPrediction() {
       alert("Prediction failed", err);
     }
   };
+
+const goToMarketComparison = () => {
+ const input = {
+    city: selectedCity,
+    area: selectedArea,
+    bhk: Number(bhk),
+    size: Number(size),
+    bathroom: Number(bathroom),
+    rent: rent ? Number(rent) : prediction.predictedRent,
+  };
+
+  //persist data
+  localStorage.setItem("rentInput", JSON.stringify(input));
+
+  navigate("/marketcomparison", {
+    state: { input },
+  });
+};
+
 
   return (
     <div className="w-full font-sans-serif flex justify-center">
@@ -220,9 +246,18 @@ function RentPrediction() {
                 {prediction.result}
               </span>
             </div>
+            <button
+  type="button"
+  className="bg-green-600 hover:bg-green-700 text-white font-semibold rounded-sm px-4 py-2"
+  onClick={goToMarketComparison}
+>
+  Go to Market Comparison
+</button>
           </div>
+          
         )}
       </div>
+      
     </div>
   );
 }
