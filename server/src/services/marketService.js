@@ -77,4 +77,4 @@ const compareMarket = ({ city, area, bhk, size, rent }) => {
   }; 
 };
 
-module.exports = { compareMarket };
+module.exports = { compareMarket }; 

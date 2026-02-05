@@ -28,9 +28,9 @@ function ChartBlock({ title, avg, yourRent, verdict, insight }) {
       <h3 className="font-semibold text-lg">{title}</h3>
 
       {/*Fixed Height – This is critical */}
-      <div className="w-full" style={{ height: 260 }}>
+      <div className="w-full" style={{ height: 400 }}>
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={chartData} barCategoryGap={40}>
+          <BarChart data={chartData} barCategoryGap={180}>
             <XAxis dataKey="name" />
             <YAxis />
             <Tooltip formatter={(v) => `₹ ${v}`} />

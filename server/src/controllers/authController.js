@@ -6,17 +6,17 @@ const saltRounds = 10;
 
 const register = async (req, res) => {
   try {
-    const { name, email, password, confirmPassword } = req.body;
+    const { name, email, password, confirmpassword } = req.body;
 
     // Validation
-    if (!name || !email || !password || !confirmPassword) {
+    if (!name || !email || !password || !confirmpassword) {
       return res.status(400).json({
         success: false,
         message: "All fields are required"
       });
     }
 
-    if (password !== confirmPassword) {
+    if (password !== confirmpassword) {
       return res.status(400).json({
         success: false,
         message: "Password does not match"

@@ -97,6 +97,7 @@ const goToMarketComparison = () => {
 };
 
 
+
   return (
     <div className="w-full font-sans-serif flex justify-center">
       <div className="container shadow-md rounded-sm bg-gray-50 mt-15 w-120 p-4">

@@ -35,6 +35,7 @@ const loadCSV = async () => {
           ) {
             return; // skip row
           }
+
           // Only clean, valid rows enter the system
           data.push({
             city: normalize(city),
@@ -56,7 +57,7 @@ const loadCSV = async () => {
   }
 };
 
-//get loaded data
+// get loaded data
 const getData = () => {
   if (!data.length) {
     throw new Error("CSV data not loaded yet");
@@ -64,4 +65,7 @@ const getData = () => {
   return data;
 };
 
-module.exports = { loadCSV, getData };
+// fixed: return the loaded data
+const getRows = () => data;
+
+module.exports = { loadCSV, getRows, getData };

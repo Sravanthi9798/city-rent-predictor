@@ -5,8 +5,8 @@ import ChartBlock from "../components/ChartBlock";
 
 function MarketComparisonDashboard() {
   const navigate = useNavigate();
-  const input =location.state?.input ||
-    JSON.parse(localStorage.getItem("rentInput"));
+  const input =
+    location.state?.input || JSON.parse(localStorage.getItem("rentInput"));
   const [data, setData] = useState(null);
 
   useEffect(() => {
@@ -31,14 +31,40 @@ function MarketComparisonDashboard() {
 
   if (!data) return <div className="p-6">Loading...</div>;
 
+  const goToHeatmap = async () => {
+  if (!input?.city) return alert("City not available");
+
+  try {
+    // Fetch map data from your API
+    const res = await fetch(
+      `http://localhost:3001/api/map/rent-map/${input.city}`
+    );
+
+    if (!res.ok) throw new Error("Failed to fetch map data");
+
+    const mapData = await res.json();
+
+    // Navigate to heatmap page with state
+    navigate("/rent-heatmap", {
+      state: {
+        city: input.city,
+        mapData,
+      },
+    });
+  } catch (err) {
+    alert("Failed to load heatmap data: " + err.message);
+  }
+};
+
+
   return (
     <div className="max-w-5xl mx-auto p-6 space-y-6">
       <button
-      onClick={() => navigate("/")}
-      className="text-sm text-balck-600 hover:underline flex items-center gap-1"
-    >
-      ← Back to Rent Predictor
-    </button>
+        onClick={() => navigate("/")}
+        className="text-sm text-balck-600 hover:underline flex items-center gap-1"
+      >
+        ← Back to Rent Predictor
+      </button>
       <h2 className="text-xl font-bold">
         Market Comparison – {input.city} / {input.area}
       </h2>
@@ -73,6 +99,16 @@ function MarketComparisonDashboard() {
         verdict={data.cityComparison.verdict}
         insight={data.cityComparison.insight}
       />
+      {/* HEATMAP NAVIGATION */}
+     <div className="flex justify-center pt-6">
+  <button
+    onClick={goToHeatmap}
+    className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
+  >
+    View Rent Heatmap for {input.city}
+  </button>
+</div>
+
     </div>
   );
 }
