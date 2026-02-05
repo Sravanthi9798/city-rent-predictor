@@ -32,30 +32,29 @@ function MarketComparisonDashboard() {
   if (!data) return <div className="p-6">Loading...</div>;
 
   const goToHeatmap = async () => {
-  if (!input?.city) return alert("City not available");
+    if (!input?.city) return alert("City not available");
 
-  try {
-    // Fetch map data from your API
-    const res = await fetch(
-      `http://localhost:3001/api/map/rent-map/${input.city}`
-    );
+    try {
+      // Fetch map data from your API
+      const res = await fetch(
+        `http://localhost:3001/api/map/rent-map/${input.city}`,
+      );
 
-    if (!res.ok) throw new Error("Failed to fetch map data");
+      if (!res.ok) throw new Error("Failed to fetch map data");
 
-    const mapData = await res.json();
+      const mapData = await res.json();
 
-    // Navigate to heatmap page with state
-    navigate("/rent-heatmap", {
-      state: {
-        city: input.city,
-        mapData,
-      },
-    });
-  } catch (err) {
-    alert("Failed to load heatmap data: " + err.message);
-  }
-};
-
+      // Navigate to heatmap page with state
+      navigate("/rent-heatmap", {
+        state: {
+          city: input.city,
+          mapData,
+        },
+      });
+    } catch (err) {
+      alert("Failed to load heatmap data: " + err.message);
+    }
+  };
 
   return (
     <div className="max-w-5xl mx-auto p-6 space-y-6">
@@ -100,15 +99,14 @@ function MarketComparisonDashboard() {
         insight={data.cityComparison.insight}
       />
       {/* HEATMAP NAVIGATION */}
-     <div className="flex justify-center pt-6">
-  <button
-    onClick={goToHeatmap}
-    className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
-  >
-    View Rent Heatmap for {input.city}
-  </button>
-</div>
-
+      <div className="flex justify-center pt-6">
+        <button
+          onClick={goToHeatmap}
+          className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
+        >
+          View Rent Heatmap for {input.city}
+        </button>
+      </div>
     </div>
   );
 }

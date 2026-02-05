@@ -4,7 +4,7 @@ import RentPrediction from './pages/RentPrediction';
 import MarketComparisonDashboard from './pages/MarketComparisonDashboard';
 import Register from './pages/Register';
 import LoginPage from './pages/Login';
-import RentMap from './pages/RentMap';
+import RentHeatmap from './pages/RentHeatMap';
 function App() {
 
   return (
@@ -14,7 +14,7 @@ function App() {
         <Route path="/register" element={<Register/>} />
         <Route path="/rentPredictor" element={<RentPrediction/>}/>
         <Route path="/marketcomparison" element={<MarketComparisonDashboard/>} />
-        <Route path="/rent-heatmap" element={<RentMap />} />
+        <Route path="/rent-heatmap" element={<RentHeatmap />} />
       </Routes>
     </BrowserRouter>
   )
