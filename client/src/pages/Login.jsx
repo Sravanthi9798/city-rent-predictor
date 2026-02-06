@@ -33,8 +33,9 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
-      <div className="flex flex-col items-center gap-15 bg-gray-50 justify-center w-120 h-150">
+    <div className="flex justify-center items-center min-h-screen pb-40">
+        <div className="flex flex-col shadow-md items-center gap-15 justify-center w-120 h-100 rounded-xl bg-white/30 backdrop-blur-md border border-white/90">
+
         <div>
           <p className="font-bold text-2xl">Welcome!</p>
         </div>
@@ -48,7 +49,7 @@ export default function LoginPage() {
                 type="text"
                 name="email"
                 placeholder="Enter your email"
-                className="border p-2"
+                className="border rounded-sm h-9 bg-white border-gray-300 p-2"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -60,18 +61,18 @@ export default function LoginPage() {
                 type="password"
                 name="password"
                 placeholder="Enter your password"
-                className="border p-2"
+                className="border rounded-sm h-9 bg-white border-gray-300 p-2"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
-              <button className=" w-96 p-2 bg-sky-500 hover:bg-sky-700 font-bold mt-3 text-white">
+              <button className="w-96 p-2 bg-sky-500 hover:bg-sky-700 font-bold mt-3 text-white rounded-sm">
                 Log In
               </button>
             </div>
           </form>
           {msg && <p className="text-center text-red-600 mt-2">{msg}</p>}
-          <div className=" flex w-98 my-3 justify-end">
+          <div className=" flex w-98 my-3 justify-end rounded-sm">
             <button className="text-sky-600 " onClick={NavigateSignup}>
               Sign Up
             </button>

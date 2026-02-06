@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Header from "../components/Header";
 
 function RentPrediction() {
   const [cities, setCities] = useState([]);
@@ -79,7 +80,9 @@ function RentPrediction() {
   };
 
 const goToMarketComparison = () => {
- const input = {
+  if (!prediction) return alert("Please predict rent first");
+
+  const inputData = {
     city: selectedCity,
     area: selectedArea,
     bhk: Number(bhk),
@@ -88,19 +91,22 @@ const goToMarketComparison = () => {
     rent: rent ? Number(rent) : prediction.predictedRent,
   };
 
-  //persist data
-  localStorage.setItem("rentInput", JSON.stringify(input));
+  // Save to localStorage so refresh works
+  localStorage.setItem("rentInput", JSON.stringify(inputData));
 
   navigate("/marketcomparison", {
-    state: { input },
+    state: { input: inputData },
   });
 };
 
 
 
   return (
+    
     <div className="w-full font-sans-serif flex justify-center">
-      <div className="container shadow-md rounded-sm bg-gray-50 mt-15 w-120 p-4">
+      
+      <div className="container rounded-sm mt-15 w-120 p-4 shadow-md bg-white/30 backdrop-blur-md border border-white/90">
+        
         {/* Logo */}
         {/* <div className="flex justify-center">
           <img className="w-20" src={person} alt="logo" />
@@ -204,7 +210,7 @@ const goToMarketComparison = () => {
           />
 
           <button
-            className="bg-sky-700 text-white font-semibold rounded-sm mt-5 h-9"
+            className="bg-sky-500 text-white font-semibold rounded-sm mt-5 h-9"
             type="submit"
           >
             Predict Rent

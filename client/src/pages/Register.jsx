@@ -66,7 +66,7 @@ const Register = () => {
   };
   return (
     <div className="w-full font-sans-serif  flex justify-center">
-      <div className="container justify-center shadow-md rounded-sm bg-gray-50 h-150 mt-15 item-center w-120 p-3">
+      <div className="container justify-center shadow-md rounded-sm  h-150 mt-15 item-center w-120 p-3 bg-white/20 backdrop-blur-md border border-white/30">
         <div className=" flex justify-center">
           <h2 className="font-semibold  text-xl text-black">Sign Up!</h2>
         </div>
@@ -75,7 +75,7 @@ const Register = () => {
             Name
           </label>
           <input
-            className="rounded-sm h-9 bg-white border-gray-300 p-2 "
+            className="border rounded-sm h-9 bg-white border-gray-300 p-2"
             name="name"
             type="text"
             onChange={handleChange}
@@ -87,7 +87,7 @@ const Register = () => {
             Email
           </label>
           <input
-            className="rounded-sm h-9 bg-white  border-gray-300 p-2"
+            className="border rounded-sm h-9 bg-white border-gray-300 p-2"
             name="email"
             type="text"
             onChange={handleChange}
@@ -99,7 +99,7 @@ const Register = () => {
             Password
           </label>
           <input
-            className="rounded-sm h-9 bg-white  border-gray-300 p-2"
+            className="border rounded-sm h-9 bg-white border-gray-300 p-2"
             name="password"
             type="password"
             onChange={handleChange}
@@ -111,7 +111,7 @@ const Register = () => {
             Confirm Password
           </label>
           <input
-            className="rounded-sm bg-white  border-gray-300 h-9 p-2"
+            className="border rounded-sm h-9 bg-white border-gray-300 p-2"
             name="confirmpassword"
             type="password"
             onChange={handleChange}
@@ -120,7 +120,7 @@ const Register = () => {
             required
           />
           <button
-            className="bg-sky-700 font-semibold cursor-pointer rounded-sm  mt-5 h-8 text-white"
+            className= "bg-sky-500 hover:bg-sky-700font-semibold cursor-pointer rounded-sm  mt-5 h-8 text-white"
             type="submit"
             onClick={registerPage}
           >
