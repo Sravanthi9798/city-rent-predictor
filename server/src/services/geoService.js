@@ -1,5 +1,5 @@
 const axios = require("axios");
-const GeoCache = require("../models/geoCache");
+const GeoCache = require("../models/geoCacheModel");
 
 // Get lat/lng from MongoDB if exists, else fetch from OpenStreetMap
 const getLatLng = async (area, city) => {

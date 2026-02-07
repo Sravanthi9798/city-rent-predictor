@@ -10,7 +10,7 @@ const loadCSV = async () => {
   data = []; // reset on restart
   try {
     await new Promise((resolve, reject) => {
-      fs.createReadStream("data/Housing.csv")
+      fs.createReadStream("src/data/Housing.csv")
         .pipe(csv())
         .on("data", (row) => {
           const city = row.City;
