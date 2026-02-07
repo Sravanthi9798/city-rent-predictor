@@ -1,16 +1,29 @@
 const { getCityMapData } = require("../services/mapService");
 
-const getMapAreas = async (req, res) => {
+const getRentMapByCity = async (req, res) => {
   try {
-    const { city } = req.query;
-    if (!city) return res.status(400).json({ message: "City is required" });
-
-    const result = await getCityMapData(city);
-    res.json(result);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Map data fetch failed" });
+    const { city } = req.params;
+    if (!city) {
+      return res.status(400).json({
+        success: false,
+        message: "City is required",
+      });
+    }
+    const areas = await getCityMapData(city);
+    res.status(200).json({
+      success: true,
+      city,
+      areas,
+    });
+  } catch (error) {
+    console.error("Rent map error:", error.message);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch rent map data",
+    });
   }
 };
 
-module.exports = { getMapAreas };
+module.exports = {
+  getRentMapByCity,
+};

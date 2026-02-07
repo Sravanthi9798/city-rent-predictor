@@ -1,6 +1,7 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import RentMap from "../components/RentMap";
+import Header from "../components/Header";
 
 function RentHeatmap() {
   const location = useLocation();
@@ -20,7 +21,8 @@ function RentHeatmap() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
+    <div className="mx-auto">
+      <Header/>
       <h2 className="text-xl font-bold mb-4">Rent Heatmap – {city}</h2>
       <RentMap mapData={mapData} />
     </div>

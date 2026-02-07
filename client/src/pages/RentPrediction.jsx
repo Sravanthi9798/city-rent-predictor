@@ -99,20 +99,13 @@ const goToMarketComparison = () => {
   });
 };
 
-
-
-  return (
-    
-    <div className="w-full font-sans-serif flex justify-center">
-      
+  return ( 
+    <div>
+      <Header/>
+    <div className="w-full font-sans-serif flex justify-center">   
+            
       <div className="container rounded-sm mt-15 w-120 p-4 shadow-md bg-white/30 backdrop-blur-md border border-white/90">
-        
-        {/* Logo */}
-        {/* <div className="flex justify-center">
-          <img className="w-20" src={person} alt="logo" />
-        </div> */}
 
-        {/* Heading */}
         <div className="flex justify-center mb-3">
           <h2 className="font-semibold text-xl text-black">Rent Predictor</h2>
         </div>
@@ -265,6 +258,7 @@ const goToMarketComparison = () => {
         )}
       </div>
       
+    </div>
     </div>
   );
 }

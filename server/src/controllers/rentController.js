@@ -69,7 +69,7 @@ const getAreasController = (req, res) => {
     cityRows.forEach(d => {
       const area = d.area?.trim();
       if (!area) return;
-
+    // Increments listing count per area
       areaCountMap[area] = (areaCountMap[area] || 0) + 1;
     });
 

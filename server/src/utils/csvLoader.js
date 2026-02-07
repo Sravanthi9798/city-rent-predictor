@@ -66,6 +66,7 @@ const getData = () => {
 };
 
 // fixed: return the loaded data
+// Used in map services where empty data is acceptable
 const getRows = () => data;
 
 module.exports = { loadCSV, getRows, getData };
