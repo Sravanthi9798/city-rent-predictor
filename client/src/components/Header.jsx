@@ -10,7 +10,7 @@ function Header({ title, showBack = false }) {
   };
 
   return (
-    <div className="w-full flex justify-between items-center px-6 py-3 bg-white shadow">
+    <div className="w-full flex justify-between items-center px-6 py-3 bg-linear-to-r/decreasing from-indigo-200 to-teal-100 shadow">
       <div className="flex items-center gap-3">
         {showBack && (
           <button

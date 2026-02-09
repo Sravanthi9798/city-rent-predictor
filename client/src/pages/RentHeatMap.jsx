@@ -25,7 +25,7 @@ function RentHeatmap() {
       <Header title="Rent HeatMap" showBack />
      <div className="relative w-full h-screen">
   {/* MAP HEADING OVERLAY */}
-  <div className="absolute top-4 left-1/2 -translate-x-1/2 z-[1000] 
+  <div className="absolute top-4 left-1/2 -translate-x-1/2 z-1000 
                   bg-white/80 backdrop-blur-md px-6 py-2 rounded-lg shadow">
     <h2 className="text-lg font-bold text-gray-800">
       Rent Heatmap – {city}

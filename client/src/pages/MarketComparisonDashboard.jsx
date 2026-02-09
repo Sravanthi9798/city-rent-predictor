@@ -15,7 +15,6 @@ function MarketComparisonDashboard() {
   // Prevent duplicate API calls (React 18 Strict Mode)
   const fetchedRef = useRef(false);
 
-  // STEP 1: Load input ONCE
   useEffect(() => {
     const storedInput =
       location.state?.input ||
@@ -87,7 +86,7 @@ function MarketComparisonDashboard() {
 
   return (
     <div>
-      <Header title="Market Comparison Dashboard" showBack />
+      <Header title="Market Comparison" showBack />
       <div className="max-w-5xl mx-auto p-6 space-y-6">
 
         <h2 className="text-xl font-bold">
