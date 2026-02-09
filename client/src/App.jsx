@@ -1,18 +1,17 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-
 import RentPrediction from "./pages/RentPrediction";
 import MarketComparisonDashboard from "./pages/MarketComparisonDashboard";
 import Register from "./pages/Register";
 import LoginPage from "./pages/Login";
 import RentHeatmap from "./pages/RentHeatMap";
 
-// 🔐 Simple auth check
+//Simple auth check
 const isAuthenticated = () => {
   return !!localStorage.getItem("token");
 };
 
-// 🔒 Protected Route wrapper
+//Protected Route wrapper
 const ProtectedRoute = ({ children }) => {
   return isAuthenticated() ? children : <Navigate to="/" replace />;
 };
