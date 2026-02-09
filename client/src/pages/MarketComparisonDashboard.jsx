@@ -27,9 +27,9 @@ function MarketComparisonDashboard() {
     }
 
     setInput(storedInput);
-  }, [location.state, navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  // STEP 2: Fetch market comparison ONLY ONCE
   useEffect(() => {
     if (!input || fetchedRef.current) return;
 
@@ -52,15 +52,18 @@ function MarketComparisonDashboard() {
       });
   }, [input]);
 
-  // HEATMAP NAVIGATION
   const goToHeatmap = async () => {
-    if (!input?.city) return alert("City not available");
+    if (!input?.city) {
+      alert("City not available");
+      return;
+    }
 
     setLoadingHeatmap(true);
     try {
       const res = await fetch(
         `http://localhost:3001/api/map/rent-map/${input.city}`
       );
+
       if (!res.ok) throw new Error("Failed to fetch map data");
 
       const mapData = await res.json();
@@ -84,67 +87,60 @@ function MarketComparisonDashboard() {
 
   return (
     <div>
-       <Header/>
-    <div className="max-w-5xl mx-auto p-6 space-y-6">
+      <Header title="Market Comparison Dashboard" showBack />
+      <div className="max-w-5xl mx-auto p-6 space-y-6">
 
-      <button
-        onClick={() => navigate("/")}
-        className="text-sm text-black hover:underline flex items-center gap-1"
-      >
-        ← Back to Rent Predictor
-      </button>
+        <h2 className="text-xl font-bold">
+          Market Comparison – {input.city} / {input.area}
+        </h2>
 
-      <h2 className="text-xl font-bold">
-        Market Comparison – {input.city} / {input.area}
-      </h2>
+        {/* SUMMARY */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <SummaryCard title="Your Rent" value={`₹ ${input.rent}`} />
+          <SummaryCard
+            title="Area Avg Rent"
+            value={`₹ ${data.areaComparison.avgMarketRent}`}
+          />
+          <SummaryCard
+            title="City Avg Rent"
+            value={`₹ ${data.cityComparison.avgMarketRent}`}
+          />
+        </div>
 
-      {/* SUMMARY */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <SummaryCard title="Your Rent" value={`₹ ${input.rent}`} />
-        <SummaryCard
-          title="Area Avg Rent"
-          value={`₹ ${data.areaComparison.avgMarketRent}`}
+        {/* AREA COMPARISON */}
+        <ChartBlock
+          title="Area Comparison"
+          avg={data.areaComparison.avgMarketRent}
+          yourRent={input.rent}
+          verdict={data.areaComparison.verdict}
+          insight={data.areaComparison.insight}
         />
-        <SummaryCard
-          title="City Avg Rent"
-          value={`₹ ${data.cityComparison.avgMarketRent}`}
+
+        {/* CITY COMPARISON */}
+        <ChartBlock
+          title="City Comparison"
+          avg={data.cityComparison.avgMarketRent}
+          yourRent={input.rent}
+          verdict={data.cityComparison.verdict}
+          insight={data.cityComparison.insight}
         />
-      </div>
 
-      {/* AREA COMPARISON */}
-      <ChartBlock
-        title="Area Comparison"
-        avg={data.areaComparison.avgMarketRent}
-        yourRent={input.rent}
-        verdict={data.areaComparison.verdict}
-        insight={data.areaComparison.insight}
-      />
-
-      {/* CITY COMPARISON */}
-      <ChartBlock
-        title="City Comparison"
-        avg={data.cityComparison.avgMarketRent}
-        yourRent={input.rent}
-        verdict={data.cityComparison.verdict}
-        insight={data.cityComparison.insight}
-      />
-
-      {/* HEATMAP BUTTON */}
-      <div className="flex justify-center pt-6">
-        <button
-          onClick={goToHeatmap}
-          disabled={loadingHeatmap}
-          className={`px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition ${
-            loadingHeatmap ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-        >
-          {loadingHeatmap
-            ? "Loading Heatmap..."
-            : `View Rent Heatmap for ${input.city}`}
-        </button>
+        {/* HEATMAP BUTTON */}
+        <div className="flex justify-center pt-6">
+          <button
+            onClick={goToHeatmap}
+            disabled={loadingHeatmap}
+            className={`px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition ${
+              loadingHeatmap ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+          >
+            {loadingHeatmap
+              ? "Loading Heatmap..."
+              : `View Rent Heatmap for ${input.city}`}
+          </button>
+        </div>
       </div>
     </div>
-     </div>    
   );
 }
 

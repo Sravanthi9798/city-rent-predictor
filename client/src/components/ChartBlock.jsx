@@ -34,7 +34,6 @@ function ChartBlock({ title, avg, yourRent, verdict, insight }) {
             <XAxis dataKey="name" />
             <YAxis />
             <Tooltip formatter={(v) => `₹ ${v}`} />
-
             <Bar
               dataKey="value"
               animationDuration={1500}

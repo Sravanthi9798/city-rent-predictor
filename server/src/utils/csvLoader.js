@@ -1,9 +1,8 @@
 const fs = require("fs");
 const csv = require("csv-parser");
+const { normalize } = require("./normalize");
 
 let data = [];
-
-const normalize = (v) => (v ? v.trim().toLowerCase() : "");
 
 // load csv
 const loadCSV = async () => {

@@ -6,36 +6,51 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
   const handleLogin = async (e) => {
     e.preventDefault();
-    const res = await fetch("http://localhost:3001/api/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: email,
-        password,
-      }),
-    });
-    const data = await res.json();
-    if (res.ok) {
-      setMsg("Login Successful!");
-      console.log("TOKEN ->", data.token);
-      console.log("res", data.user);
+
+    if (!emailRegex.test(email)) {
+      setMsg("Enter a valid email address");
+      return;
+    }
+
+    if (password.length < 8) {
+      setMsg("Password must be at least 8 characters");
+      return;
+    }
+
+    try {
+      const res = await fetch("http://localhost:3001/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setMsg(data.message);
+        return;
+      }
+
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
       navigate("/rentPredictor");
-    } else {
-      setMsg(data.message);
+    } catch {
+      setMsg("Server error. Try again");
     }
   };
+
   const NavigateSignup = () => {
     navigate("/register");
   };
 
   return (
     <div className="flex justify-center items-center min-h-screen pb-40">
-        <div className="flex flex-col shadow-md items-center gap-15 justify-center w-120 h-100 rounded-xl bg-white/30 backdrop-blur-md border border-white/90">
-
+      <div className="flex flex-col shadow-md items-center gap-15 justify-center w-120 h-100 rounded-xl bg-white/30 backdrop-blur-md border border-white/90">
         <div>
           <p className="font-bold text-2xl">Welcome!</p>
         </div>

@@ -4,6 +4,11 @@ const jwt=require("jsonwebtoken")
 
 const saltRounds = 10;
 
+//Regex rules
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const passwordRegex =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
+
 const register = async (req, res) => {
   try {
     const { name, email, password, confirmpassword } = req.body;
@@ -13,6 +18,17 @@ const register = async (req, res) => {
       return res.status(400).json({
         success: false,
         message: "All fields are required"
+      });
+    }
+
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ message: "Invalid email format" });
+    }
+
+    if (!passwordRegex.test(password)) {
+      return res.status(400).json({
+        message:
+          "Password must be at least 8 characters and include uppercase, lowercase, number and special character"
       });
     }
 
@@ -64,6 +80,9 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password required" });
+    } 
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: "User not found" });

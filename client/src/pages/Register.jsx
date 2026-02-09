@@ -13,27 +13,38 @@ const Register = () => {
     const { name, value } = e.target;
     setData((prev) => ({ ...prev, [name]: value }));
   };
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#]).{8,}$/;
+
   const validate = () => {
     const { name, email, password, confirmpassword } = data;
+
     if (!name || !email || !password || !confirmpassword) {
-      alert("all field are required");
+      alert("All fields are required");
       return false;
     }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
     if (!emailRegex.test(email)) {
-      alert("invalid email address");
+      alert("Invalid email format");
       return false;
     }
-    if (password.length <= "6") {
-      alert("length of the password is less than 6");
+
+    if (!passwordRegex.test(password)) {
+      alert(
+        "Password must contain:\n• 8+ characters\n• Uppercase\n• Lowercase\n• Number\n• Special character",
+      );
       return false;
     }
-    if (confirmpassword !== password) {
-      alert("Password and Confirm Password should be same");
+
+    if (password !== confirmpassword) {
+      alert("Passwords do not match");
       return false;
     }
+
     return true;
   };
+
   const navigateLoginPage = () => {
     navigate("/");
   };
@@ -120,7 +131,7 @@ const Register = () => {
             required
           />
           <button
-            className= "bg-sky-500 hover:bg-sky-700font-semibold cursor-pointer rounded-sm  mt-5 h-8 text-white"
+            className="bg-sky-500 hover:bg-sky-700font-semibold cursor-pointer rounded-sm  mt-5 h-8 text-white"
             type="submit"
             onClick={registerPage}
           >

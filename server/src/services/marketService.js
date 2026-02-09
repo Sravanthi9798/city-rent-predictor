@@ -1,6 +1,5 @@
 const { getData } = require("../utils/csvLoader");
-
-const normalize = (v) => (v ? v.trim().toLowerCase() : "");
+const { normalize } = require("../utils/normalize");
 
 const calculateMarketStats = (listings, rent, level) => {
   const rents = listings.map(d => d.rent);

@@ -1,5 +1,6 @@
 const Regression = require("ml-regression-multivariate-linear");
 const { getData } = require("../utils/csvLoader");
+const { normalize } = require("../utils/normalize");
 
 // constants, beacause ml cannot understand strings
 const furnishingMap = {
@@ -8,7 +9,6 @@ const furnishingMap = {
   furnished: 2
 };
 
-const normalize = (v) => (v ? v.trim().toLowerCase() : "");
 
 // main service
 const evaluateRent = async (

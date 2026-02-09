@@ -27,7 +27,7 @@ const RentMap = ({ mapData }) => {
   const center = [areas[0].lat, areas[0].lng];
 
   return (
-    <MapContainer center={center} zoom={10.5} style={{ height: "100vh", width: "100%" }}>
+    <MapContainer center={center} zoom={10.5} style={{ height: "100%", width: "100%" }}>
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
       {areas.map((area, idx) => (
         <Marker key={idx} position={[area.lat, area.lng]} icon={getMarkerIcon(area.level)}> 

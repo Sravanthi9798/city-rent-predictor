@@ -1,5 +1,6 @@
 const { evaluateRent } = require("../services/rentService");
 const { getData } = require("../utils/csvLoader");
+const { normalize } = require("../utils/normalize");
 
 // Evaluate rent API
 const evaluateRentController = async (req, res) => {
@@ -26,7 +27,6 @@ const evaluateRentController = async (req, res) => {
   }
 };
 
-const normalize = (str) => (str ? str.trim().toLowerCase() : "");
 
 // Get all unique cities
 const getCitiesController = (req, res) => {
