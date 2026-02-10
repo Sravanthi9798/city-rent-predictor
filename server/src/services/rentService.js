@@ -9,7 +9,6 @@ const furnishingMap = {
   furnished: 2
 };
 
-
 // main service
 const evaluateRent = async (
   city,
@@ -110,10 +109,6 @@ const evaluateRent = async (
       max: maxEstimatedRent
     },
     result,
-    explanation: `Prediction based on:
-- ${level}-level data
-- Multivariate Linear Regression
-- Minimum 3 listings enforced`
   };
 };
 

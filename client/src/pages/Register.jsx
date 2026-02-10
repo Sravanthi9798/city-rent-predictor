@@ -8,7 +8,8 @@ const Register = () => {
     password: "",
     confirmpassword: "",
   });
-  const [msg, setMsg] = useState("");
+  const [errors, setErrors] = useState({});
+
   const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,31 +20,35 @@ const Register = () => {
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#]).{8,}$/;
 
   const validate = () => {
+    const newErrors = {};
     const { name, email, password, confirmpassword } = data;
 
-    if (!name || !email || !password || !confirmpassword) {
-      setMsg("All fields are required");
-      return false;
+    if (!name.trim()) {
+      newErrors.name = "Name is required";
     }
 
-    if (!emailRegex.test(email)) {
-      setMsg("Invalid email format");
-      return false;
+    if (!email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!emailRegex.test(email)) {
+      newErrors.email = "Invalid email format";
     }
 
-    if (!passwordRegex.test(password)) {
-      setMsg(
-        "Password must contain 8+ characters,one Uppercase,one Lowercase,one Number and   Special character",
-      );
-      return false;
+    if (!password) {
+      newErrors.password = "Password is required";
+    } else if (!passwordRegex.test(password)) {
+      newErrors.password =
+        "Password must contain 8+ characters, uppercase, lowercase, number & special character";
     }
 
-    if (password !== confirmpassword) {
-      setMsg("Passwords do not match");
-      return false;
+    if (!confirmpassword) {
+      newErrors.confirmpassword = "Confirm password is required";
+    } else if (password !== confirmpassword) {
+      newErrors.confirmpassword = "Passwords do not match";
     }
 
-    return true;
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
   };
 
   const navigateLoginPage = () => {
@@ -94,6 +99,9 @@ const Register = () => {
             value={data.name}
             placeholder="Enter Your name"
           />
+          {errors.name && (
+            <p className="text-red-600 text-sm text-left">{errors.name}</p>
+          )}
           <label className="flex font-semibold item-start my-1 text-black">
             Email <span className="text-red-500">*</span>
           </label>
@@ -105,6 +113,10 @@ const Register = () => {
             value={data.email}
             placeholder="Enter your email"
           />
+          {errors.email && (
+            <p className="text-red-600 text-sm text-left">{errors.email}</p>
+          )}
+
           <label className="flex font-semibold item-start my-1  text-black">
             Password<span className="text-red-500">*</span>
           </label>
@@ -116,6 +128,9 @@ const Register = () => {
             value={data.password}
             placeholder="Enter your password"
           />
+          {errors.password && (
+            <p className="text-red-600 text-sm text-left">{errors.password}</p>
+          )}
           <label className="flex font-semibold item-start my-1  text-black">
             Confirm Password<span className="text-red-500">*</span>
           </label>
@@ -127,7 +142,11 @@ const Register = () => {
             value={data.confirmpassword}
             placeholder="Confirm your password"
           />
-          {msg && <p className="text-center text-red-600 mt-2">{msg}</p>}
+          {errors.confirmpassword && (
+            <p className="text-red-600 text-sm text-left">
+              {errors.confirmpassword}
+            </p>
+          )}
           <button
             className="bg-sky-500 hover:bg-sky-700font-semibold cursor-pointer rounded-sm  mt-5 h-8 text-white"
             type="submit"
