@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import SummaryCard from "../components/SummaryCard";
 import ChartBlock from "../components/ChartBlock";
 import Header from "../components/Header";
+import { getCachedMap, setCachedMap } from "../utils/mapCache";
 
 function MarketComparisonDashboard() {
   const navigate = useNavigate();
@@ -51,34 +52,34 @@ function MarketComparisonDashboard() {
       });
   }, [input]);
 
-  const goToHeatmap = async () => {
-    if (!input?.city) {
-      alert("City not available");
-      return;
-    }
+const goToHeatmap = async () => {
+  if (!input?.city) return;
 
-    setLoadingHeatmap(true);
-    try {
+  setLoadingHeatmap(true);
+
+  try {
+    // Try cache first
+    let mapData = getCachedMap(input.city);
+
+    // If not cached, fetch & cache
+    if (!mapData) {
       const res = await fetch(
         `http://localhost:3001/api/map/rent-map/${input.city}`
       );
-
-      if (!res.ok) throw new Error("Failed to fetch map data");
-
-      const mapData = await res.json();
-
-      navigate("/rent-heatmap", {
-        state: {
-          city: input.city,
-          mapData,
-        },
-      });
-    } catch (err) {
-      alert("Failed to load heatmap data: " + err.message);
-    } finally {
-      setLoadingHeatmap(false);
+      mapData = await res.json();
+      setCachedMap(input.city, mapData);
     }
-  };
+
+    navigate("/rent-heatmap", {
+      state: { city: input.city, mapData },
+    });
+  } catch (err) {
+    alert("Failed to load heatmap",err);
+  } finally {
+    setLoadingHeatmap(false);
+  }
+};
+
 
   if (!input || !data) {
     return <div className="p-6">Loading market comparison...</div>;

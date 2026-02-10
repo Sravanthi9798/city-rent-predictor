@@ -117,4 +117,7 @@ const evaluateRent = async (
   };
 };
 
+// ML library solves this equation:
+// W=(XTX)−1XTY
+
 module.exports = { evaluateRent };

@@ -22,8 +22,8 @@ const evaluateRentController = async (req, res) => {
     );
 
     res.json(response);
-  } catch (err) {
-    res.status(500).json({ message: "Prediction failed", error: err.message });
+  } catch (error) {
+    res.status(500).json({ message: error.message});
   }
 };
 
@@ -41,9 +41,9 @@ const getCitiesController = (req, res) => {
     ].sort();
 
     res.json(cities);
-  } catch (err) {
-    console.error("Error getting cities:", err);
-    res.status(500).json({ message: "Failed to fetch cities", error: err.message });
+  } catch (error) {
+    console.error("Error getting cities:", error);
+    res.status(500).json({ message: error.message});
   }
 };
 
@@ -82,7 +82,6 @@ const getAreasController = (req, res) => {
   } catch (err) {
     console.error("Error getting areas:", err);
     res.status(500).json({
-      message: "Failed to fetch areas",
       error: err.message
     });
   }

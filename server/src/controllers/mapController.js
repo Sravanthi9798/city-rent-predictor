@@ -19,7 +19,7 @@ const getRentMapByCity = async (req, res) => {
     console.error("Rent map error:", error.message);
     res.status(500).json({
       success: false,
-      message: "Failed to fetch rent map data",
+      message: error.message,
     });
   }
 };

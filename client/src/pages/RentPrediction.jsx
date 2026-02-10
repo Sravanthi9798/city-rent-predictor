@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
+import { getCachedMap, setCachedMap } from "../utils/mapCache";
 
 function RentPrediction() {
   const [cities, setCities] = useState([]);
@@ -40,6 +41,20 @@ function RentPrediction() {
       .then((res) => res.json())
       .then((data) => setAreas(data))
       .catch((err) => console.error(err));
+  }, [selectedCity]);
+
+  // PRELOAD HEATMAP IN BACKGROUND
+  useEffect(() => {
+    if (!selectedCity) return;
+    if (getCachedMap(selectedCity)) return;
+
+    fetch(`http://localhost:3001/api/map/rent-map/${selectedCity}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setCachedMap(selectedCity, data);
+        console.log("Heatmap cached for", selectedCity);
+      })
+      .catch(() => {});
   }, [selectedCity]);
 
   const handleSubmit = async (e) => {
