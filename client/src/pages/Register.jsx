@@ -8,6 +8,7 @@ const Register = () => {
     password: "",
     confirmpassword: "",
   });
+  const [msg, setMsg] = useState("");
   const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,24 +22,24 @@ const Register = () => {
     const { name, email, password, confirmpassword } = data;
 
     if (!name || !email || !password || !confirmpassword) {
-      alert("All fields are required");
+      setMsg("All fields are required");
       return false;
     }
 
     if (!emailRegex.test(email)) {
-      alert("Invalid email format");
+      setMsg("Invalid email format");
       return false;
     }
 
     if (!passwordRegex.test(password)) {
-      alert(
-        "Password must contain:\n• 8+ characters\n• Uppercase\n• Lowercase\n• Number\n• Special character",
+      setMsg(
+        "Password must contain 8+ characters,one Uppercase,one Lowercase,one Number and   Special character",
       );
       return false;
     }
 
     if (password !== confirmpassword) {
-      alert("Passwords do not match");
+      setMsg("Passwords do not match");
       return false;
     }
 
@@ -83,7 +84,7 @@ const Register = () => {
         </div>
         <form className="flex p-5 flex-col">
           <label className="flex font-semibold item-start my-1 text-black">
-            Name
+            Name<span className="text-red-500">*</span>
           </label>
           <input
             className="border rounded-sm h-9 bg-white border-gray-300 p-2"
@@ -92,10 +93,9 @@ const Register = () => {
             onChange={handleChange}
             value={data.name}
             placeholder="Enter Your name"
-            required
           />
           <label className="flex font-semibold item-start my-1 text-black">
-            Email
+            Email <span className="text-red-500">*</span>
           </label>
           <input
             className="border rounded-sm h-9 bg-white border-gray-300 p-2"
@@ -104,10 +104,9 @@ const Register = () => {
             onChange={handleChange}
             value={data.email}
             placeholder="Enter your email"
-            required
           />
           <label className="flex font-semibold item-start my-1  text-black">
-            Password
+            Password<span className="text-red-500">*</span>
           </label>
           <input
             className="border rounded-sm h-9 bg-white border-gray-300 p-2"
@@ -116,10 +115,9 @@ const Register = () => {
             onChange={handleChange}
             value={data.password}
             placeholder="Enter your password"
-            required
           />
           <label className="flex font-semibold item-start my-1  text-black">
-            Confirm Password
+            Confirm Password<span className="text-red-500">*</span>
           </label>
           <input
             className="border rounded-sm h-9 bg-white border-gray-300 p-2"
@@ -128,8 +126,8 @@ const Register = () => {
             onChange={handleChange}
             value={data.confirmpassword}
             placeholder="Confirm your password"
-            required
           />
+          {msg && <p className="text-center text-red-600 mt-2">{msg}</p>}
           <button
             className="bg-sky-500 hover:bg-sky-700font-semibold cursor-pointer rounded-sm  mt-5 h-8 text-white"
             type="submit"
