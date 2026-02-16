@@ -11,6 +11,7 @@ const Register = () => {
   const [errors, setErrors] = useState({});
 
   const navigate = useNavigate();
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData((prev) => ({ ...prev, [name]: value }));
@@ -54,6 +55,7 @@ const Register = () => {
   const navigateLoginPage = () => {
     navigate("/");
   };
+
   const registerPage = async (e) => {
     e.preventDefault();
     if (!validate()) return;
@@ -81,6 +83,7 @@ const Register = () => {
       console.log(err, "Try again");
     }
   };
+
   return (
     <div className="w-full font-sans-serif  flex justify-center">
       <div className="container justify-center shadow-md rounded-sm  h-150 mt-15 item-center w-120 p-3 bg-white/20 backdrop-blur-md border border-white/30">

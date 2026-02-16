@@ -55,6 +55,7 @@ const register = async (req, res) => {
           "Password must be at least 8 characters and include uppercase, lowercase, number and special character",
       });
     }
+    
     // Check if password and confirm password match
     if (password !== confirmpassword) {
       return res.status(400).json({

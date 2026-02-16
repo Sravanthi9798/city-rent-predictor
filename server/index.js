@@ -19,17 +19,20 @@ const PORT = 3001;
   app.use("/api", marketRoutes);
   app.use("/api/map", mapRoutes);
 
-(async () => {
+async function startServer() {
   try {
     await dataBase();
     await loadCSV();
+
     app.listen(PORT, () => {
-      console.log("Server running on port 3001");
+      console.log(`Server running on port ${PORT}`);
     });
   } catch (err) {
-    console.error("Server failed to start");
+    console.error("Server failed:", err.message);
     process.exit(1);
   }
-})();
+}
+
+startServer();
 
 
