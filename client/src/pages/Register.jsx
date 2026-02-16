@@ -100,7 +100,7 @@ const Register = () => {
             placeholder="Enter Your name"
           />
           {errors.name && (
-            <p className="text-red-600 text-sm text-left">{errors.name}</p>
+            <p className="text-red-600 text-[12px] text-left">{errors.name}</p>
           )}
           <label className="flex font-semibold item-start my-1 text-black">
             Email <span className="text-red-500">*</span>
@@ -114,7 +114,7 @@ const Register = () => {
             placeholder="Enter your email"
           />
           {errors.email && (
-            <p className="text-red-600 text-sm text-left">{errors.email}</p>
+            <p className="text-red-600 text-[12px] text-left">{errors.email}</p>
           )}
 
           <label className="flex font-semibold item-start my-1  text-black">
@@ -129,7 +129,7 @@ const Register = () => {
             placeholder="Enter your password"
           />
           {errors.password && (
-            <p className="text-red-600 text-sm text-left">{errors.password}</p>
+            <p className="text-red-600 text-[12px] text-left">{errors.password}</p>
           )}
           <label className="flex font-semibold item-start my-1  text-black">
             Confirm Password<span className="text-red-500">*</span>
@@ -143,7 +143,7 @@ const Register = () => {
             placeholder="Confirm your password"
           />
           {errors.confirmpassword && (
-            <p className="text-red-600 text-sm text-left">
+            <p className="text-red-600 text-[12px] text-left">
               {errors.confirmpassword}
             </p>
           )}

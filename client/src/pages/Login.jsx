@@ -65,6 +65,7 @@ const LoginPage = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen pb-40">
+            <div className="pb-10 flex flex-col"><h1 className="font-bold text-2xl pb-10 pt-15">City Rent Predictor & Market Analyzer</h1>
       <div className="flex flex-col shadow-md items-center gap-15 justify-center w-120 h-100 rounded-xl bg-white/30 backdrop-blur-md border border-white/90">
         <div>
           <p className="font-bold text-2xl">Welcome!</p>
@@ -84,7 +85,7 @@ const LoginPage = () => {
                 onChange={(e) => setEmail(e.target.value)}
               />
               {errors.email && (
-                <p className="text-red-600 text-sm text-left">{errors.email}</p>
+                <p className="text-red-600 text-[12px] text-left">{errors.email}</p>
               )}
               <label htmlFor="password" className="self-start font-bold">
                 Password <span className="text-red-500">*</span>
@@ -98,7 +99,7 @@ const LoginPage = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
               {errors.password && (
-                <p className="text-red-600 text-sm text-left">
+                <p className="text-red-600 text-[12px] text-left">
                   {errors.password}
                 </p>
               )}
@@ -116,6 +117,7 @@ const LoginPage = () => {
             </button>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

@@ -6,14 +6,15 @@ import { getCachedMap, setCachedMap } from "../utils/mapCache";
 function RentPrediction() {
   const [cities, setCities] = useState([]);
   const [areas, setAreas] = useState([]);
-  const [selectedCity, setSelectedCity] = useState("");
-  const [selectedArea, setSelectedArea] = useState("");
   const [bhk, setBhk] = useState("");
   const [size, setSize] = useState("");
   const [bathroom, setBathroom] = useState("");
   const [furnishing, setFurnishing] = useState("");
   const [rent, setRent] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
+  const [selectedArea, setSelectedArea] = useState("");
   const [prediction, setPrediction] = useState(null);
+  const [msg, setMsg] = useState("");
 
   const navigate = useNavigate();
 
@@ -34,7 +35,6 @@ function RentPrediction() {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setSelectedArea("");
     if (!selectedCity) return;
-
     fetch(
       `http://localhost:3001/api/areas?city=${encodeURIComponent(selectedCity)}`,
     )
@@ -57,20 +57,45 @@ function RentPrediction() {
       .catch(() => {});
   }, [selectedCity]);
 
+  const validate = () => {
+    if (!selectedCity) {
+      setMsg("City is required");
+      return false;
+    }
+
+    if (!selectedArea) {
+      setMsg("Area is required");
+      return false;
+    }
+
+    if (!bhk) {
+      setMsg("BHK is required");
+      return false;
+    }
+
+    if (!size) {
+      setMsg("Size is required");
+      return false;
+    }
+
+    if (!bathroom) {
+      setMsg("Bathroom count is required");
+      return false;
+    }
+
+    if (!furnishing) {
+      setMsg("Furnishing type is required");
+      return false;
+    }
+
+    setMsg(""); // clear error if everything is valid
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (
-      !selectedCity ||
-      !selectedArea ||
-      !bhk ||
-      !size ||
-      !bathroom ||
-      !furnishing
-    ) {
-      alert("All fields are required");
-      return;
-    }
+    if (!validate()) return;
 
     try {
       const res = await fetch("http://localhost:3001/api/rent/predict", {
@@ -90,7 +115,7 @@ function RentPrediction() {
       const data = await res.json();
       setPrediction(data);
     } catch (err) {
-      alert("Prediction failed", err);
+      setMsg("Prediction failed. Please try again.", err);
     }
   };
 
@@ -118,20 +143,19 @@ function RentPrediction() {
     <div>
       <Header />
       <div className="w-full font-sans-serif flex justify-center">
-        <div className="container rounded-sm mt-10 w-120 p-4 mb-10 shadow-md bg-white/30 backdrop-blur-md border border-white/90">
-          <div className="flex justify-center mb-3">
+        <div className="container rounded-sm mt-10 w-120 p-4 mb-8 shadow-md bg-white/30 backdrop-blur-md border border-white/90">
+          <div className="flex justify-center mb-2">
             <h2 className="font-semibold text-xl text-black">Rent Predictor</h2>
           </div>
 
           {/* Form */}
-          <form className="flex flex-col p-3 pb-10" onSubmit={handleSubmit}>
+          <form className="flex flex-col p-1" onSubmit={handleSubmit}>
             {/* City */}
             <label className="font-semibold my-1 text-left">City</label>
             <select
-              className="border rounded-sm h-9 pl-1"
+              className="border rounded-sm bg-white border-gray-300 h-9 pl-1"
               value={selectedCity}
               onChange={(e) => setSelectedCity(e.target.value)}
-              required
             >
               <option value="">Select City</option>
               {cities.map((city) => (
@@ -144,10 +168,9 @@ function RentPrediction() {
             {/* Area */}
             <label className="font-semibold my-1 text-left">Area</label>
             <select
-              className="border rounded-sm h-9 pl-1"
+              className="border rounded-sm h-9 pl-1 bg-white border-gray-300"
               value={selectedArea}
               onChange={(e) => setSelectedArea(e.target.value)}
-              required
             >
               <option value="">Select Area</option>
               {areas.map((area) => (
@@ -160,43 +183,39 @@ function RentPrediction() {
             {/* BHK */}
             <label className="font-semibold my-1 text-left">BHK</label>
             <input
-              className="border rounded-sm h-9 pl-2"
+              className="border rounded-sm h-9 pl-2 bg-white border-gray-300"
               type="number"
               min="1"
               value={bhk}
               onChange={(e) => setBhk(e.target.value)}
-              required
             />
 
             {/* Size */}
             <label className="font-semibold my-1 text-left">Size (sqft)</label>
             <input
-              className="border rounded-sm h-9 pl-2"
+              className="border rounded-sm h-9 pl-2 bg-white border-gray-300"
               type="number"
               min="1"
               value={size}
               onChange={(e) => setSize(e.target.value)}
-              required
             />
 
             {/* Bathrooms */}
             <label className="font-semibold my-1 text-left">Bathrooms</label>
             <input
-              className="border rounded-sm h-9 pl-2"
+              className="border rounded-sm h-9 pl-2 bg-white border-gray-300"
               type="number"
               min="1"
               value={bathroom}
               onChange={(e) => setBathroom(e.target.value)}
-              required
             />
 
             {/* Furnishing */}
             <label className="font-semibold my-1 text-left">Furnishing</label>
             <select
-              className="border rounded-sm h-9 pl-1"
+              className="border rounded-sm h-9 pl-1 bg-white border-gray-300"
               value={furnishing}
               onChange={(e) => setFurnishing(e.target.value)}
-              required
             >
               <option value="">Select</option>
               <option value="Unfurnished">Unfurnished</option>
@@ -209,13 +228,13 @@ function RentPrediction() {
               Rent to check
             </label>
             <input
-              className="border rounded-sm h-9 pl-2"
+              className="border rounded-sm h-9 pl-2 bg-white border-gray-300"
               type="number"
               value={rent}
               onChange={(e) => setRent(e.target.value)}
               placeholder="Enter a rent amount"
             />
-
+            {msg && <p className="text-center text-red-600 mt-2">{msg}</p>}
             <button
               className="bg-sky-500 text-white font-semibold rounded-sm mt-5 h-9"
               type="submit"

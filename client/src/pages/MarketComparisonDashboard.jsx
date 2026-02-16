@@ -18,17 +18,18 @@ function MarketComparisonDashboard() {
 
   useEffect(() => {
     const storedInput =
-      location.state?.input ||
-      JSON.parse(localStorage.getItem("rentInput"));
+      location.state?.input || JSON.parse(localStorage.getItem("rentInput"));
 
     if (!storedInput) {
       navigate("/");
       return;
     }
 
-    setInput(storedInput);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    setInput((prev) => {
+      if (prev) return prev; // prevent double set
+      return storedInput;
+    });
+  }, [location.state, navigate]);
 
   useEffect(() => {
     if (!input || fetchedRef.current) return;
@@ -52,34 +53,33 @@ function MarketComparisonDashboard() {
       });
   }, [input]);
 
-const goToHeatmap = async () => {
-  if (!input?.city) return;
+  const goToHeatmap = async () => {
+    if (!input?.city) return;
 
-  setLoadingHeatmap(true);
+    setLoadingHeatmap(true);
 
-  try {
-    // Try cache first
-    let mapData = getCachedMap(input.city);
+    try {
+      // Try cache first
+      let mapData = getCachedMap(input.city);
 
-    // If not cached, fetch & cache
-    if (!mapData) {
-      const res = await fetch(
-        `http://localhost:3001/api/map/rent-map/${input.city}`
-      );
-      mapData = await res.json();
-      setCachedMap(input.city, mapData);
+      // If not cached, fetch & cache
+      if (!mapData) {
+        const res = await fetch(
+          `http://localhost:3001/api/map/rent-map/${input.city}`,
+        );
+        mapData = await res.json();
+        setCachedMap(input.city, mapData);
+      }
+
+      navigate("/rent-heatmap", {
+        state: { city: input.city, mapData },
+      });
+    } catch (err) {
+      alert("Failed to load heatmap", err);
+    } finally {
+      setLoadingHeatmap(false);
     }
-
-    navigate("/rent-heatmap", {
-      state: { city: input.city, mapData },
-    });
-  } catch (err) {
-    alert("Failed to load heatmap",err);
-  } finally {
-    setLoadingHeatmap(false);
-  }
-};
-
+  };
 
   if (!input || !data) {
     return <div className="p-6">Loading market comparison...</div>;
@@ -89,7 +89,6 @@ const goToHeatmap = async () => {
     <div>
       <Header title="Market Comparison" showBack />
       <div className="max-w-5xl mx-auto p-6 space-y-6">
-
         <h2 className="text-xl font-bold">
           Market Comparison – {input.city} / {input.area}
         </h2>

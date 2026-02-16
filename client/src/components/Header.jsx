@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import backIcon from '../assets/backIcon.png';
 
 function Header({ title, showBack = false }) {
   const navigate = useNavigate();
@@ -10,14 +11,14 @@ function Header({ title, showBack = false }) {
   };
 
   return (
-    <div className="w-full flex justify-between items-center px-6 py-3 bg-gray-50 shadow">
+    <div className="w-full flex justify-between items-center px-6 py-3 bg-gray-100 shadow">
       <div className="flex items-center gap-3">
         {showBack && (
           <button
             onClick={() => navigate(-1)}
             className="text-sm text-gray-700 hover:text-black h-10 w-10"
           >
-            ←
+            <img src={backIcon} alt="" className="w-5 bg-white cursor-pointer" />
           </button>
         )}
 

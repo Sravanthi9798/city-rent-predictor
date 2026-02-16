@@ -27,7 +27,6 @@ const evaluateRentController = async (req, res) => {
   }
 };
 
-
 // Get all unique cities
 const getCitiesController = (req, res) => {
   try {
@@ -70,6 +69,7 @@ const getAreasController = (req, res) => {
       const area = d.area?.trim();
       if (!area) return;
     // Increments listing count per area
+    // if  area is exits, increment one
       areaCountMap[area] = (areaCountMap[area] || 0) + 1;
     });
 
