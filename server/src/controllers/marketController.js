@@ -1,10 +1,6 @@
 // Import market comparison business logic from service layer
 const { compareMarket } = require("../services/marketService");
 
-//  Controller to handle market rent comparison requests
-//  Reads query parameters, validates input, invokes service logic,
-// and returns a structured comparison response
-
 const marketComparisonController = (req, res) => {
   try {
     // Extract required query parameters from request URL

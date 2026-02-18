@@ -16,6 +16,15 @@ const ProtectedRoute = ({ children }) => {
   return isAuthenticated() ? children : <Navigate to="/" replace />;
 };
 
+// Public Route (Login/Register protection)
+const PublicRoute = ({ children }) => {
+  return isAuthenticated() ? (
+    <Navigate to="/rentPredictor" replace />
+  ) : (
+    children
+  );
+};
+
 function App() {
   return (
     <BrowserRouter>
@@ -24,13 +33,18 @@ function App() {
         <Route
           path="/"
           element={
-            isAuthenticated() ? <Navigate to="/rentPredictor" /> : <LoginPage />
+            <PublicRoute>
+              <LoginPage />
+            </PublicRoute>
           }
         />
+
         <Route
           path="/register"
           element={
-            isAuthenticated() ? <Navigate to="/rentPredictor" /> : <Register />
+            <PublicRoute>
+              <Register />
+            </PublicRoute>
           }
         />
 

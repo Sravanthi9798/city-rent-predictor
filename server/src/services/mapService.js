@@ -1,25 +1,14 @@
-// Import cached CSV data reader
-// getRows() returns normalized in-memory rent records loaded from CSV
 const { getRows } = require("../utils/csvLoader");
-
-// Import geo service to fetch latitude & longitude for a given area + city
-// This may fetch from MongoDB cache or external geocoding API
 const { getLatLng } = require("./geoService");
 
-// Utility function to classify rent level relative to city average
-// LOW  → 20% below city average
-// HIGH → 20% above city average
-// MED  → within normal range
 const getRentLevel = (rent, cityAvg) => {
-  if (rent < cityAvg * 0.8) return "LOW";
-  if (rent > cityAvg * 1.2) return "HIGH";
-  return "MED";
+  if (rent < cityAvg * 0.8) return "LOW";// LOW  → 20% below city average
+  if (rent > cityAvg * 1.2) return "HIGH";// HIGH → 20% above city average
+  return "MED";// MED  → within normal range
 };
 
 // Main service to prepare map-ready rent data for a city
-// Used by Leaflet / Map UI to render colored markers
 const getCityMapData = async (cityInput) => {
-  // Normalize city input for case-insensitive matching
   const city = cityInput.toLowerCase();
 
   // Filter all CSV rows belonging to the selected city
@@ -42,8 +31,7 @@ const getCityMapData = async (cityInput) => {
 
   // Calculate average rent of the entire city
   // Used as a baseline for LOW / MED / HIGH classification
-  const cityAvg =
-    rows.reduce((sum, r) => sum + r.rent, 0) / rows.length;
+  const cityAvg = rows.reduce((sum, r) => sum + r.rent, 0) / rows.length;
 
   // Fetch latitude & longitude for each area in parallel
   // Promise.all improves performance by avoiding sequential API calls

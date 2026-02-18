@@ -55,7 +55,7 @@ const register = async (req, res) => {
           "Password must be at least 8 characters and include uppercase, lowercase, number and special character",
       });
     }
-    
+
     // Check if password and confirm password match
     if (password !== confirmpassword) {
       return res.status(400).json({
@@ -133,9 +133,7 @@ const login = async (req, res) => {
 
     // Generate JWT token for authenticated user
     // Token contains user ID and expires in 1 day
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1d",
-    });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {expiresIn: "1d"});
 
     // Send success response with token and user details
     res.status(200).json({

@@ -22,14 +22,12 @@ const evaluateRent = async (
   const data = getData();
 
   // Filter by area + city
-  let filtered = data.filter(
-    d =>
+  let filtered = data.filter(d =>
       normalize(d.city) === normalize(city) &&
       normalize(d.area) === normalize(area)
   );
 
   let level = "area";
-
   // fallback to city
   if (filtered.length < 3) {
     filtered = data.filter(d =>
@@ -81,6 +79,7 @@ const evaluateRent = async (
 
   // Train ML model
   const model = new Regression(X, Y);
+  // console.log(model.weights,"model.weights");
 
   // Predict rent
   const predictedRent = model.predict([[

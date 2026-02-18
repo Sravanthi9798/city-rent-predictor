@@ -65,7 +65,7 @@ const getLatLng = async (area, city) => {
       lng: latLng.lng,
     }).catch(err => {
       // Ignore duplicate key error (already cached)
-      if (err.code !== 11000) console.error(err);
+      if (err.code !== 11000) console.error(err.message);
     });
 
     // Return newly fetched coordinates

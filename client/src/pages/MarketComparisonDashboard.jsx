@@ -13,12 +13,11 @@ function MarketComparisonDashboard() {
   const [data, setData] = useState(null);
   const [loadingHeatmap, setLoadingHeatmap] = useState(false);
 
-  // Prevent duplicate API calls (React 18 Strict Mode)
+  // Prevent duplicate API calls
   const fetchedRef = useRef(false);
 
   useEffect(() => {
-    const storedInput =
-      location.state?.input || JSON.parse(localStorage.getItem("rentInput"));
+    const storedInput =location.state?.input || JSON.parse(localStorage.getItem("rentInput"));
 
     if (!storedInput) {
       navigate("/");

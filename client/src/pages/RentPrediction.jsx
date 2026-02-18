@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
-import { getCachedMap, setCachedMap } from "../utils/mapCache";
+import axios from "axios";
 
 function RentPrediction() {
   const [cities, setCities] = useState([]);
@@ -24,9 +24,9 @@ function RentPrediction() {
 
   // Fetch cities
   useEffect(() => {
-    fetch("http://localhost:3001/api/cities")
-      .then((res) => res.json())
-      .then((data) => setCities(data))
+    axios
+      .get("http://localhost:3001/api/cities")
+      .then((res) => setCities(res.data))
       .catch((err) => console.error(err));
   }, []);
 
@@ -35,24 +35,23 @@ function RentPrediction() {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setSelectedArea("");
     if (!selectedCity) return;
-    fetch(
-      `http://localhost:3001/api/areas?city=${encodeURIComponent(selectedCity)}`,
-    )
-      .then((res) => res.json())
-      .then((data) => setAreas(data))
+
+    axios
+      .get("http://localhost:3001/api/areas", {
+        params: { city: selectedCity },
+      })
+      .then((res) => setAreas(res.data))
       .catch((err) => console.error(err));
   }, [selectedCity]);
 
-  // PRELOAD HEATMAP IN BACKGROUND
+  // preload heatmap in bachground
   useEffect(() => {
     if (!selectedCity) return;
-    if (getCachedMap(selectedCity)) return;
 
-    fetch(`http://localhost:3001/api/map/rent-map/${selectedCity}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setCachedMap(selectedCity, data);
-        console.log("Heatmap cached for", selectedCity);
+    axios
+      .get(`http://localhost:3001/api/map/rent-map/${selectedCity}`)
+      .then((res) => {
+        console.log("Heatmap cached for", selectedCity, res.data);
       })
       .catch(() => {});
   }, [selectedCity]);
@@ -98,22 +97,17 @@ function RentPrediction() {
     if (!validate()) return;
 
     try {
-      const res = await fetch("http://localhost:3001/api/rent/predict", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          city: selectedCity,
-          area: selectedArea,
-          bhk: Number(bhk),
-          size: Number(size),
-          bathroom: Number(bathroom),
-          furnished: furnishing.toLowerCase(),
-          rent: rent ? Number(rent) : undefined,
-        }),
+      const res = await axios.post("http://localhost:3001/api/rent/predict", {
+        city: selectedCity,
+        area: selectedArea,
+        bhk: Number(bhk),
+        size: Number(size),
+        bathroom: Number(bathroom),
+        furnished: furnishing.toLowerCase(),
+        rent: rent ? Number(rent) : undefined,
       });
 
-      const data = await res.json();
-      setPrediction(data);
+      setPrediction(res.data);
     } catch (err) {
       setMsg("Prediction failed. Please try again.", err);
     }
@@ -151,7 +145,9 @@ function RentPrediction() {
           {/* Form */}
           <form className="flex flex-col p-1" onSubmit={handleSubmit}>
             {/* City */}
-            <label className="font-semibold my-1 text-left">City</label>
+            <label className="font-semibold my-1 text-left">
+              City<span className="text-red-500">*</span>
+            </label>
             <select
               className="border rounded-sm bg-white border-gray-300 h-9 pl-1"
               value={selectedCity}
@@ -166,7 +162,9 @@ function RentPrediction() {
             </select>
 
             {/* Area */}
-            <label className="font-semibold my-1 text-left">Area</label>
+            <label className="font-semibold my-1 text-left">
+              Area<span className="text-red-500">*</span>
+            </label>
             <select
               className="border rounded-sm h-9 pl-1 bg-white border-gray-300"
               value={selectedArea}
@@ -181,7 +179,9 @@ function RentPrediction() {
             </select>
 
             {/* BHK */}
-            <label className="font-semibold my-1 text-left">BHK</label>
+            <label className="font-semibold my-1 text-left">
+              BHK<span className="text-red-500">*</span>
+            </label>
             <input
               className="border rounded-sm h-9 pl-2 bg-white border-gray-300"
               type="number"
@@ -191,7 +191,9 @@ function RentPrediction() {
             />
 
             {/* Size */}
-            <label className="font-semibold my-1 text-left">Size (sqft)</label>
+            <label className="font-semibold my-1 text-left">
+              Size (sqft)<span className="text-red-500">*</span>
+            </label>
             <input
               className="border rounded-sm h-9 pl-2 bg-white border-gray-300"
               type="number"
@@ -201,7 +203,9 @@ function RentPrediction() {
             />
 
             {/* Bathrooms */}
-            <label className="font-semibold my-1 text-left">Bathrooms</label>
+            <label className="font-semibold my-1 text-left">
+              Bathrooms<span className="text-red-500">*</span>
+            </label>
             <input
               className="border rounded-sm h-9 pl-2 bg-white border-gray-300"
               type="number"
@@ -211,7 +215,9 @@ function RentPrediction() {
             />
 
             {/* Furnishing */}
-            <label className="font-semibold my-1 text-left">Furnishing</label>
+            <label className="font-semibold my-1 text-left">
+              Furnishing<span className="text-red-500">*</span>
+            </label>
             <select
               className="border rounded-sm h-9 pl-1 bg-white border-gray-300"
               value={furnishing}
@@ -225,7 +231,7 @@ function RentPrediction() {
 
             {/* Rent */}
             <label className="font-semibold my-1 text-left">
-              Rent to check
+              Rent to check<span className="text-red-500">*</span>
             </label>
             <input
               className="border rounded-sm h-9 pl-2 bg-white border-gray-300"

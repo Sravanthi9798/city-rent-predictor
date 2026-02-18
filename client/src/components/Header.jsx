@@ -30,7 +30,7 @@ function Header({ title, showBack = false }) {
         </h2>
       </div>
       <div className="flex items-center gap-4">
-        {user && <span className="text-sm">Hi, {user.name}</span>}
+        {user && <span className="text-sm">Hi, {user.name.charAt(0).toUpperCase() + user.name.slice(1).toLowerCase()}</span>}
         <button
           onClick={logout}
           className="px-3 py-1 bg-red-500 text-white rounded"

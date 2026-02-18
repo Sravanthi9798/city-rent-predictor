@@ -1,6 +1,4 @@
 // Import map service that prepares city-wise rent data with lat/lng
-// This service aggregates CSV data, computes averages,
-// and enriches areas with geo-coordinates for map rendering
 const { getCityMapData } = require("../services/mapService");
 
 // Controller to handle API request for rent map data by city

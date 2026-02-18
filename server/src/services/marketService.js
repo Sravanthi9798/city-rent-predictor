@@ -21,16 +21,10 @@ const calculateMarketStats = (listings, rent, level) => {
 
   // Compare user rent with market average
   if (rent > avgRent) {
-    // Calculate how much higher the rent is compared to market average
     differencePercent = ((rent - avgRent) / avgRent) * 100;
-
-    // Mark as overpriced if difference exceeds tolerance threshold
     if (differencePercent > 5) verdict = "Overpriced";
   } else {
-    // Calculate how much lower the rent is compared to market average
     differencePercent = ((avgRent - rent) / avgRent) * 100;
-
-    // Mark as underpriced if difference exceeds tolerance threshold
     if (differencePercent > 5) verdict = "Underpriced";
   }
 
@@ -90,7 +84,6 @@ const compareMarket = ({ city, area, bhk, size, rent }) => {
 
   // Return comparison summary
   return {
-    // Echo back sanitized user input
     input: {
       city,
       area,

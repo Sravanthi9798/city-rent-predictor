@@ -6,7 +6,7 @@ let data = [];
 
 // load csv
 const loadCSV = async () => {
-  data = []; // reset on restart
+  data = []; // reset on restart, prevents duplicate entries if server restarts.
   try {
     await new Promise((resolve, reject) => {
       fs.createReadStream("src/data/Housing.csv")
@@ -19,19 +19,8 @@ const loadCSV = async () => {
           const bathroom = Number(row.Bathroom);
           const rent = Number(row.Rent);
 
-          // Remove row  if ANY field is missing or invalid
-          if (
-            !city ||
-            !area ||
-            !bhk ||
-            !size ||
-            !bathroom ||
-            !rent ||
-            Number.isNaN(bhk) ||
-            Number.isNaN(size) ||
-            Number.isNaN(bathroom) ||
-            Number.isNaN(rent)
-          ) {
+          // Remove row  if any field is missing or invalid
+          if (!city ||!area ||!bhk ||!size ||!bathroom ||!rent ||Number.isNaN(bhk) ||Number.isNaN(size) ||Number.isNaN(bathroom) ||Number.isNaN(rent)) {
             return; // skip row
           }
 
