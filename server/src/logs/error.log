@@ -1,0 +1,17 @@
+
+2026-02-25T04:23:38.261Z
+URL: /api/login
+METHOD: POST
+MESSAGE: Invalid credentials
+STACK: Error: Invalid credentials
+    at login (C:\Users\sravanthi.alluri\KF\city_rent_predictor\city-rent-predictor\server\src\controllers\authController.js:109:21)
+--------------------------------------------------
+
+2026-02-25T04:24:34.724Z
+URL: /api/login
+METHOD: POST
+MESSAGE: User not found
+STACK: Error: User not found
+    at login (C:\Users\sravanthi.alluri\KF\city_rent_predictor\city-rent-predictor\server\src\controllers\authController.js:102:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+--------------------------------------------------

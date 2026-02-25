@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import axios from "axios";
 
-function RentPrediction() {
+const RentPrediction=()=>{
   const [cities, setCities] = useState([]);
   const [areas, setAreas] = useState([]);
   const [bhk, setBhk] = useState("");
@@ -47,7 +47,6 @@ function RentPrediction() {
   // preload heatmap in bachground
   useEffect(() => {
     if (!selectedCity) return;
-
     axios
       .get(`http://localhost:3001/api/map/rent-map/${selectedCity}`)
       .then((res) => {
@@ -133,6 +132,15 @@ function RentPrediction() {
     });
   };
 
+  const capitalizeWords = (text) => {
+    if (!text) return "";
+    return text
+      .toLowerCase()
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
+
   return (
     <div>
       <Header />
@@ -156,7 +164,7 @@ function RentPrediction() {
               <option value="">Select City</option>
               {cities.map((city) => (
                 <option key={city} value={city}>
-                  {city}
+                  {capitalizeWords(city)}
                 </option>
               ))}
             </select>
@@ -173,7 +181,7 @@ function RentPrediction() {
               <option value="">Select Area</option>
               {areas.map((area) => (
                 <option key={area} value={area}>
-                  {area}
+                  {capitalizeWords(area)}
                 </option>
               ))}
             </select>

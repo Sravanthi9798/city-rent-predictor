@@ -24,7 +24,7 @@ function Header({ title, showBack = false }) {
 
         <h2
           className="text-lg font-bold cursor-pointer"
-          onClick={() => navigate("/rentPredictor")}
+          onClick={() => navigate("/rentPredictor")} 
         >
           {title || "Rent Predictor"}
         </h2>

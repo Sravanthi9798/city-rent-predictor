@@ -2,14 +2,13 @@ const Regression = require("ml-regression-multivariate-linear");
 const { getData } = require("../utils/csvLoader");
 const { normalize } = require("../utils/normalize");
 
-// constants, beacause ml cannot understand strings
+// ML cannot understand strings → convert to numbers
 const furnishingMap = {
   unfurnished: 0,
   semifurnished: 1,
   furnished: 2
 };
 
-// main service
 const evaluateRent = async (
   city,
   area,
@@ -21,14 +20,15 @@ const evaluateRent = async (
 ) => {
   const data = getData();
 
-  // Filter by area + city
+  //  Filter by area + city
   let filtered = data.filter(d =>
-      normalize(d.city) === normalize(city) &&
-      normalize(d.area) === normalize(area)
+    normalize(d.city) === normalize(city) &&
+    normalize(d.area) === normalize(area)
   );
 
   let level = "area";
-  // fallback to city
+
+  // Fallback to city level
   if (filtered.length < 3) {
     filtered = data.filter(d =>
       normalize(d.city) === normalize(city)
@@ -36,20 +36,20 @@ const evaluateRent = async (
     level = "city";
   }
 
-  // fallback to global
+  // Fallback to global level
   if (filtered.length < 3) {
     filtered = data;
     level = "global";
   }
 
-  // HARD STOP: ML requires at least 3 rows
+  // HARD STOP: Need minimum 3 rows
   if (filtered.length < 3) {
     throw new Error(
-      "Insufficient data: At least 3 listings are required for ML prediction"
+      "Insufficient data: At least 3 listings required for ML prediction"
     );
   }
 
-  // Prepare ML data
+  // Prepare ML matrices
   const X = [];
   const Y = [];
 
@@ -64,24 +64,39 @@ const evaluateRent = async (
         d.bhk,
         d.size,
         d.bathroom,
-        furnishingMap[normalize(d.furnishing)] ?? 0
+        furnishingMap[normalize(d.furnished)] ?? 0
       ]);
+
       Y.push([d.rent]);
     }
   });
 
-  // extra safety
   if (X.length < 3) {
-    throw new Error(
-      "Insufficient valid rows for ML regression"
-    );
+    throw new Error("Insufficient valid rows for ML regression");
   }
 
-  // Train ML model
+  // Train ML Model
   const model = new Regression(X, Y);
-  // console.log(model.weights,"model.weights");
 
-  // Predict rent
+  // Calculate R² Score
+  let ssRes = 0;
+  let ssTot = 0;
+
+  const actual = Y.map(v => v[0]);
+
+  const mean =
+    actual.reduce((sum, val) => sum + val, 0) / actual.length;
+
+  actual.forEach((y, i) => {
+    const predicted = model.predict([X[i]])[0][0];
+
+    ssRes += Math.pow(y - predicted, 2);
+    ssTot += Math.pow(y - mean, 2);
+  });
+
+  const r2 = 1 - (ssRes / ssTot);
+
+  // Predict rent for user input
   const predictedRent = model.predict([[
     bhk,
     size,
@@ -89,25 +104,30 @@ const evaluateRent = async (
     furnishingMap[normalize(furnished)] ?? 0
   ]])[0][0];
 
-  // Estimated range
-  const minEstimatedRent = Math.round(predictedRent * 0.9);  // -10%
-  const maxEstimatedRent = Math.round(predictedRent * 1.1);  // +10%
+  const minEstimatedRent = Math.round(predictedRent * 0.9);
+  const maxEstimatedRent = Math.round(predictedRent * 1.1);
 
   let result = "Fair";
   if (rent > maxEstimatedRent) result = "Too High";
   else if (rent < minEstimatedRent) result = "Too Low";
 
-  // Final response
+  // Confidence based on R²
+  let confidence = "Low";
+  if (r2 > 0.75) confidence = "High";
+  else if (r2 > 0.6) confidence = "Medium";
+
+  // Final Response
   return {
     levelUsed: level,
-    confidence: "High",
+    r2Score: Number(r2.toFixed(3)),
+    confidence,
     input: { city, area, bhk, size, bathroom, furnished, rent },
     predictedRent: Math.round(predictedRent),
     estimatedRange: {
       min: minEstimatedRent,
       max: maxEstimatedRent
     },
-    result,
+    result
   };
 };
 

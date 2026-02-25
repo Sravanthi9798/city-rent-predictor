@@ -18,12 +18,10 @@ function MarketComparisonDashboard() {
 
   useEffect(() => {
     const storedInput =location.state?.input || JSON.parse(localStorage.getItem("rentInput"));
-
     if (!storedInput) {
       navigate("/");
       return;
     }
-
     setInput((prev) => {
       if (prev) return prev; // prevent double set
       return storedInput;
@@ -32,9 +30,7 @@ function MarketComparisonDashboard() {
 
   useEffect(() => {
     if (!input || fetchedRef.current) return;
-
     fetchedRef.current = true;
-
     const query = new URLSearchParams({
       city: input.city,
       area: input.area,
@@ -69,7 +65,6 @@ function MarketComparisonDashboard() {
         mapData = await res.json();
         setCachedMap(input.city, mapData);
       }
-
       navigate("/rent-heatmap", {
         state: { city: input.city, mapData },
       });
@@ -122,7 +117,7 @@ function MarketComparisonDashboard() {
           verdict={data.cityComparison.verdict}
           insight={data.cityComparison.insight}
         />
-
+        
         {/* HEATMAP BUTTON */}
         <div className="flex justify-center pt-6">
           <button
